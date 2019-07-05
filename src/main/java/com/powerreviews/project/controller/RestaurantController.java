@@ -23,10 +23,7 @@ public class RestaurantController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantEntity> post(@RequestBody RestaurantEntity restaurant) {
-        int id = restaurantRepository.maxId() + 1;
-        restaurant.setId(id);
-        restaurantRepository.save(restaurant);
-        return new ResponseEntity<>(restaurant, new HttpHeaders(), HttpStatus.CREATED);
+        return new ResponseEntity<>(restaurantRepository.save(restaurant), new HttpHeaders(), HttpStatus.CREATED);
     }
 
     @ResponseBody

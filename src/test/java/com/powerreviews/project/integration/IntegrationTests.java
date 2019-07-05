@@ -34,7 +34,7 @@ public class IntegrationTests {
 
     @Test
     public void addAndGetRestaurant() {
-        HttpEntity<RestaurantEntity> entity = new HttpEntity<>(new RestaurantEntity(1,
+        HttpEntity<RestaurantEntity> entity = new HttpEntity<>(new RestaurantEntity(
                 MOE_S_PUBLIC_HOUSE,
                 "Social house",
                 "556",
@@ -53,7 +53,7 @@ public class IntegrationTests {
     @Test
     public void addRestaurantReviewHappyPath() {
         HttpEntity<RestaurantReviewDto> entity = new HttpEntity<>(new RestaurantReviewDto(
-                CHIPOTLE,
+                "Jimmy John's",
                 COMMENT,
                 5,
                 JON_SNOW_3,
@@ -64,7 +64,7 @@ public class IntegrationTests {
         RestaurantReviewDto payload = postResponse.getBody();
         assertNotNull(payload);
         assertEquals(CREATED, postResponse.getStatusCode());
-        assertEquals(CHIPOTLE, payload.getRestaurantName());
+        assertEquals("Jimmy John's", payload.getRestaurantName());
         assertTrue(5 == payload.getRating());
         assertEquals(JON_SNOW_3, payload.getUsername());
         assertEquals(COMMENT, payload.getComment());

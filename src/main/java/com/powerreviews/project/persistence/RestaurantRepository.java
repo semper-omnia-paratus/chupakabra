@@ -7,8 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RestaurantRepository extends JpaRepository<RestaurantEntity, Integer> {
-    @Query("SELECT MAX(id) FROM restaurant")
-    int maxId();
 
     RestaurantEntity findByName(String name);
 

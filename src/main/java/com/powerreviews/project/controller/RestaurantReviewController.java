@@ -2,7 +2,7 @@ package com.powerreviews.project.controller;
 
 import com.powerreviews.project.controller.dto.ErrorInfo;
 import com.powerreviews.project.controller.dto.RestaurantReviewDto;
-import com.powerreviews.project.service.RestaurantNotFoundException;
+import com.powerreviews.project.service.errors.RestaurantNotFoundException;
 import com.powerreviews.project.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +16,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/reviews", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -28,10 +29,17 @@ public class RestaurantReviewController {
     }
 
     @ResponseBody
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<RestaurantReviewDto>> getAll() {
+        List<RestaurantReviewDto> reviews = reviewService.getAll();
+        return new ResponseEntity<>(reviews, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<RestaurantReviewDto> get(@NotNull @PathVariable Integer id) {
-        RestaurantReviewDto restaurant = reviewService.retrieveReview(id);
-        return new ResponseEntity<>(restaurant, new HttpHeaders(), restaurant == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        RestaurantReviewDto review = reviewService.retrieveReview(id);
+        return new ResponseEntity<>(review, new HttpHeaders(), review == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @ResponseBody

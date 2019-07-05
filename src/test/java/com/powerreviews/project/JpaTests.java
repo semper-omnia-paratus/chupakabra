@@ -41,7 +41,7 @@ public class JpaTests {
 		review2.setRating(5);
 		review2.setRestaurant(restaurantRepository.findByName(ALOHA));
 		review2.setUsername("Lilly Allen");
-		review2.setComment("Great deals on Wed! Chill vibe");
+		review2.setComment("Great deals on Wed! Hawaiian vibe");
 		restaurantReviewRepository.save(review2);
 		List<RestaurantEntity> collection2 = restaurantRepository.sortedFromHighestToLowestAverageRating();
 		assertEquals("Sorted aggregation did not work out", ALOHA, collection2.get(0).getName());

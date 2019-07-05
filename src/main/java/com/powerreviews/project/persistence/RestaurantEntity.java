@@ -6,6 +6,7 @@ import java.util.Set;
 @Entity(name = "restaurant")
 public class RestaurantEntity {
     @Id
+    @GeneratedValue
     private Integer id;
 
     @Column
@@ -20,13 +21,12 @@ public class RestaurantEntity {
     @Column
     private String longitude;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
     private Set<RestaurantReviewEntity> reviews;
 
     public RestaurantEntity(){}
 
-    public RestaurantEntity(Integer id, String name, String type, String latitude, String longitude) {
-        this.id = id;
+    public RestaurantEntity(String name, String type, String latitude, String longitude) {
         this.name = name;
         this.type = type;
         this.latitude = latitude;
