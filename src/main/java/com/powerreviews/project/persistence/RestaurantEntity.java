@@ -1,8 +1,7 @@
 package com.powerreviews.project.persistence;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "restaurant")
 public class RestaurantEntity {
@@ -20,6 +19,9 @@ public class RestaurantEntity {
 
     @Column
     private String longitude;
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<RestaurantReviewEntity> reviews;
 
     public RestaurantEntity(){}
 

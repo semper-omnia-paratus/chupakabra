@@ -9,7 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequestMapping(value = "/restaurants")
 public class RestaurantController {
     private final RestaurantRepository restaurantRepository;
 
@@ -18,14 +21,7 @@ public class RestaurantController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/restaurant/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantEntity> get(@PathVariable Integer id) {
-        RestaurantEntity restaurant = restaurantRepository.findById(id).orElse(null);
-        return new ResponseEntity<>(restaurant, new HttpHeaders(), restaurant == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/restaurant", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantEntity> post(@RequestBody RestaurantEntity restaurant) {
         int id = restaurantRepository.maxId() + 1;
         restaurant.setId(id);
@@ -34,7 +30,7 @@ public class RestaurantController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/restaurant", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantEntity> put(@RequestBody RestaurantEntity restaurant) {
         RestaurantEntity updated = restaurantRepository.findById(restaurant.getId()).orElse(null);
         if (updated == null) {
@@ -49,9 +45,29 @@ public class RestaurantController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/restaurant/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantEntity> delete(@PathVariable Integer id) {
         restaurantRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestaurantEntity> get(@PathVariable Integer id) {
+        RestaurantEntity restaurant = restaurantRepository.findById(id).orElse(null);
+        return new ResponseEntity<>(restaurant, new HttpHeaders(), restaurant == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RestaurantEntity>> getCollection(@RequestParam(value = "query", required = false) String query) {
+        if (query.equals("sortedFromHighestToLowestAverageRating")) {
+            List<RestaurantEntity> restaurant = restaurantRepository.sortedFromHighestToLowestAverageRating();
+            return new ResponseEntity<>(restaurant, new HttpHeaders(), restaurant == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(restaurantRepository.findAll(), new HttpHeaders(), HttpStatus.OK);
+        }
+    }
+
+
 }

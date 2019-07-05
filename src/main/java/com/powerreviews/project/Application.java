@@ -13,7 +13,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powerreviews.project.persistence.RestaurantEntity;
 import com.powerreviews.project.persistence.RestaurantRepository;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+@EnableWebMvc
 @SpringBootApplication()
 public class Application {
 
