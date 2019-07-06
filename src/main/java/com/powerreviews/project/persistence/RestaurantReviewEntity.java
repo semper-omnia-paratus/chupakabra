@@ -43,9 +43,6 @@ public class RestaurantReviewEntity {
 
     public RestaurantReviewDto toDto() {
         RestaurantReviewDto converted = new RestaurantReviewDto();
-        if (restaurant != null) {
-            converted.setRestaurantName(restaurant.getName());
-        }
         converted.setTimestamp(timestamp);
         converted.setUsername(username);
         converted.setComment(comment);

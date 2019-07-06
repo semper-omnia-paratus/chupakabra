@@ -1,7 +1,6 @@
 package com.powerreviews.project.service;
 
 import com.powerreviews.project.controller.dto.RestaurantReviewDto;
-import com.powerreviews.project.service.errors.RestaurantNotFoundException;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  **/
 public interface ReviewService {
 
-    RestaurantReviewDto addReview(RestaurantReviewDto dto);
+    RestaurantReviewDto addReview(Integer id, RestaurantReviewDto dto);
 
     RestaurantReviewDto retrieveReview(Integer id);
 

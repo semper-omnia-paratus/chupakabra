@@ -10,15 +10,12 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class RestaurantReviewDto {
     private Integer id;
-    @RestaurantNameConstraint
-    private String restaurantName;
     private String comment;
     private Integer rating;
     private String username;
     private Timestamp timestamp;
 
-    public RestaurantReviewDto(String restaurantName, String comment, Integer rating, String username, Timestamp timestamp) {
-        this.restaurantName = restaurantName;
+    public RestaurantReviewDto(String comment, Integer rating, String username, Timestamp timestamp) {
         this.comment = comment;
         this.rating = rating;
         this.username = username;

@@ -11,10 +11,10 @@ import com.powerreviews.project.service.errors.UserRejectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -46,19 +46,19 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public RestaurantReviewDto addReview(RestaurantReviewDto dto) {
+    public RestaurantReviewDto addReview(Integer id, RestaurantReviewDto dto) {
         if (containsBannedWords(dto.getComment())) {
             throw new ForbiddenContentException();
         }
         if (bannedUsers.contains(dto.getUsername())) {
             throw new UserRejectedException();
         }
-        RestaurantEntity restaurant = restaurantRepository.findByName(dto.getRestaurantName());
-        if (dto.getRestaurantName() == null || restaurant == null) {
+        Optional<RestaurantEntity> restaurant = restaurantRepository.findById(id);
+        if (!restaurant.isPresent()) {
             throw new RestaurantNotFoundException();
         }
         RestaurantReviewEntity restaurantReviewEntity = new RestaurantReviewEntity();
-        restaurantReviewEntity.setRestaurant(restaurant);
+        restaurantReviewEntity.setRestaurant(restaurant.get());
         restaurantReviewEntity.setComment(dto.getComment());
         restaurantReviewEntity.setRating(dto.getRating());
         restaurantReviewEntity.setUsername(dto.getUsername());

@@ -24,7 +24,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IntegrationTests {
     public static final String MOE_S_PUBLIC_HOUSE = "Moe's Public House";
-    public static final String CHIPOTLE = "Chipotle";
     public static final String JON_SNOW_3 = "JonSnow3";
     public static final String COMMENT = "Neat place. Thanks";
     @LocalServerPort
@@ -53,18 +52,16 @@ public class IntegrationTests {
     @Test
     public void addRestaurantReviewHappyPath() {
         HttpEntity<RestaurantReviewDto> entity = new HttpEntity<>(new RestaurantReviewDto(
-                "Jimmy John's",
                 COMMENT,
                 5,
                 JON_SNOW_3,
                 new Timestamp(new Date().getTime())));
         ResponseEntity<RestaurantReviewDto> postResponse = restTemplate.exchange(
-                baseUri("/reviews"), HttpMethod.POST, entity, RestaurantReviewDto.class);
+                baseUri("/restaurants/1/reviews"), HttpMethod.POST, entity, RestaurantReviewDto.class);
 
         RestaurantReviewDto payload = postResponse.getBody();
         assertNotNull(payload);
         assertEquals(CREATED, postResponse.getStatusCode());
-        assertEquals("Jimmy John's", payload.getRestaurantName());
         assertTrue(5 == payload.getRating());
         assertEquals(JON_SNOW_3, payload.getUsername());
         assertEquals(COMMENT, payload.getComment());
@@ -73,13 +70,12 @@ public class IntegrationTests {
     @Test
     public void addRestaurantReviewValidationTest() {
         HttpEntity<RestaurantReviewDto> entity = new HttpEntity<>(new RestaurantReviewDto(
-                CHIPOTLE,
                 COMMENT,
                 6,
                 JON_SNOW_3,
                 new Timestamp(new Date().getTime())));
         ResponseEntity<ErrorInfo> postResponse = restTemplate.exchange(
-                baseUri("/reviews"), HttpMethod.POST, entity, ErrorInfo.class);
+                baseUri("/restaurants/1/reviews"), HttpMethod.POST, entity, ErrorInfo.class);
 
         ErrorInfo payload = postResponse.getBody();
         assertEquals(1, payload.violations.size());
