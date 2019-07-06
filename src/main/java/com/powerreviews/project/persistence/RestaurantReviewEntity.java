@@ -14,6 +14,9 @@ import java.sql.Timestamp;
 
 @Data
 @Entity(name = "restaurant_review")
+@Table(uniqueConstraints={
+        @UniqueConstraint(columnNames = {"restaurant_id", "username"})
+})
 public class RestaurantReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
