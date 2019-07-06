@@ -11,6 +11,7 @@ import com.powerreviews.project.service.errors.UserRejectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public RestaurantReviewDto addReview(RestaurantReviewDto dto) {
         if (containsBannedWords(dto.getComment())) {
             throw new ForbiddenContentException();

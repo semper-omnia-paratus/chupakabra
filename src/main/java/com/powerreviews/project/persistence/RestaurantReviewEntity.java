@@ -16,10 +16,10 @@ import java.sql.Timestamp;
 @Entity(name = "restaurant_review")
 public class RestaurantReviewEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private RestaurantEntity restaurant;
 
     @Size(min = 4, max = 200)

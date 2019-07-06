@@ -58,7 +58,7 @@ public class RestaurantController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RestaurantEntity>> getCollection(@RequestParam(value = "query", required = false) String query) {
-        if (query.equals("sortedFromHighestToLowestAverageRating")) {
+        if (query!= null && query.equals("sortedFromHighestToLowestAverageRating")) {
             List<RestaurantEntity> restaurant = restaurantRepository.sortedFromHighestToLowestAverageRating();
             return new ResponseEntity<>(restaurant, new HttpHeaders(), restaurant == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
         } else {

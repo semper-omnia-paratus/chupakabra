@@ -6,7 +6,7 @@ import java.util.Set;
 @Entity(name = "restaurant")
 public class RestaurantEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column
@@ -21,7 +21,7 @@ public class RestaurantEntity {
     @Column
     private String longitude;
 
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<RestaurantReviewEntity> reviews;
 
     public RestaurantEntity(){}
