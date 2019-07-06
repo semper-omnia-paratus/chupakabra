@@ -46,7 +46,6 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    @Transactional
     public RestaurantReviewDto addReview(RestaurantReviewDto dto) {
         if (containsBannedWords(dto.getComment())) {
             throw new ForbiddenContentException();

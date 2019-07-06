@@ -2,14 +2,13 @@ package com.powerreviews.project.controller;
 
 import com.powerreviews.project.controller.dto.ErrorInfo;
 import com.powerreviews.project.controller.dto.RestaurantReviewDto;
-import com.powerreviews.project.service.errors.RestaurantNotFoundException;
 import com.powerreviews.project.service.ReviewService;
+import com.powerreviews.project.service.errors.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -50,18 +49,12 @@ public class RestaurantReviewController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    @ExceptionHandler({ TransactionSystemException.class })
-    public ResponseEntity<ErrorInfo> handleConstraintViolation(Exception ex, ServletWebRequest req) {
-        Throwable cause = ((TransactionSystemException) ex).getRootCause();
-        while (cause != null) {
-            if (cause instanceof ConstraintViolationException) {
-                return new ResponseEntity<>(
-                        new ErrorInfo(req.getRequest().getRequestURI(), ((ConstraintViolationException) cause).getConstraintViolations()),
-                        HttpStatus.BAD_REQUEST);
-            }
-            cause = cause.getCause();
-        }
-        return null;
+    @ExceptionHandler({ConstraintViolationException.class})
+    public ResponseEntity<ErrorInfo> handleConstraintViolation(ConstraintViolationException ex, ServletWebRequest req) {
+
+        return new ResponseEntity<>(
+                new ErrorInfo(req.getRequest().getRequestURI(), ((ConstraintViolationException) ex).getConstraintViolations()),
+                HttpStatus.BAD_REQUEST);
     }
 
 }
